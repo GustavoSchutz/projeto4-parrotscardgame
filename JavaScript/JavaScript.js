@@ -1,45 +1,59 @@
-function selecionarComida(comida) {
-    let selecionadoComida = document.querySelector(".selecaoComida");
-    if (selecionadoComida !== null) {
-        selecionadoComida.classList.remove("selecaoComida");
+const cardsAmmount = prompt('Escolha entre 4 a 14 cartas.')
+
+const baralho = [
+    {
+        "<div class="carta" data-framework="nuvem">
+            <span class="material-icons azul cloud">cloud</span>
+            <img class="verso" src="./images/verso.png" alt="">
+        </div>"
+    }
+]
+
+const cards = document.querySelectorAll('.carta');
+
+console.log(baralho[0])
+
+
+let hasFlippedCard = false;
+let firstCard, secondCard;
+
+function flipCard() {
+    this.classList.toggle('flip');
+
+    if (!hasFlippedCard) {
+        // primeiro clique
+        hasFlippedCard = true;
+        firstCard = this;
+    } else {
+        // segundo clique
+        hasFlippedCard = false;
+        secondCard = this;
+
+        checkForMatch();
     }
 
-    comida.classList.add("selecaoComida");
+}   
+
+
+function checkForMatch() {
+    // são iguais?
+    if (firstCard.dataset.framework ===
+        secondCard.dataset.framework) {
+        disableCards();
+    } else {
+        unflipCards();    
+    }
 }
-function selecionarBebida(bebida) {
-    let selecionadoBebida = document.querySelector(".selecaoBebida");
-    if (selecionadoBebida !== null) {
-        selecionadoBebida.classList.remove("selecaoBebida");
-    }
-
-    bebida.classList.add("selecaoBebida");
+function disableCards() {
+    firstCard.removeEventListener('click', flipCard);
+    secondCard.removeEventListener('click', flipCard);
 }
-function selecionarSobremesa(sobremesa) {
-    let selecionadoSobremesa = document.querySelector(".selecaoSobremesa");
-    if (selecionadoSobremesa !== null) {
-        selecionadoSobremesa.classList.remove("selecaoSobremesa");
-    }
+function unflipCards() {
+    setTimeout(() => {
+        firstCard.classList.remove('flip');
+        secondCard.classList.remove('flip');
 
-    sobremesa.classList.add("selecaoSobremesa");
-    let checkSelecionadoComida = document.querySelector(".selecaoComida");
-    let checkSelecionadoBebida = document.querySelector(".selecaoBebida");
-    let checkSelecionadoSobremesa = document.querySelector(".selecaoSobremesa");
-    let botaoFinalizar = document.querySelector(".botao");
-    console.log(botaoFinalizar)
-    if (checkSelecionadoComida !== null && checkSelecionadoBebida !== null && checkSelecionadoSobremesa !== null) {
-        botaoFinalizar.classList.add("botaoVerde")
-        console.log("ola")
-    }
-
-    botaoFinalizar.classList.remove("botaoVerde")
+}, 1300);
 }
-//function confirmarPedido() {
-//    let selecionadoComida = document.querySelector(".selecaoComida");
-//    let selecionadoBebida = document.querySelector(".selecaoBebida");
-//    let selecionadoSobremesa = document.querySelector(".selecaoSobremesa");
-//    if (selecionadoComida !== null && selecionadoBebida !== null && selecionadoSobremesa !== null) {
-//        botao.classList.add("botaoVerde")
-//    }
-//
-//    botao.classList.remove("botaoVerde")
-//}
+
+cards.forEach(card => card.addEventListener('click', flipCard))
